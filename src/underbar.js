@@ -114,7 +114,6 @@
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
     iterator = iterator || _.identity;
-    console.log(iterator);
 
     //isSorted is false //
     var results = [];
@@ -187,6 +186,28 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+    var collectionCopy = [];
+    // check to see if accumulator undefined
+      // if it is, assign accumulator collection[0]
+      // assign to collectionCopy a shallow copy of collection from index 2 on
+    // otherwise, collectionCopy is copy of whole array
+    if (accumulator === undefined) {
+      accumulator = collection[0];
+      collectionCopy = collection.slice(1);
+    } else {
+      collectionCopy = collection.slice();
+    }
+
+    // iterate over the collection
+      // if an accumulator isn't provided, starts as first item in array
+      // accumulator will be updated to = current value + results of calling iterator on current vallue
+    // return accumulator
+
+    _.each(collectionCopy, function(value) {
+      accumulator = iterator(accumulator, value);
+    });
+
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
