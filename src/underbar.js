@@ -300,8 +300,21 @@
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
-  };
+    //get the arguments from the second on
+    //if we can't slice args, first make it an array then slice
+    var otherObjs = Array.prototype.slice.call(arguments, 1);
 
+    //iterate through the collection of arguments, getting any key value pairs of additional objects beyond the first
+    //add those key/value pairs to the first object
+    _.each(otherObjs, function(objArg) {
+      for (var key in objArg) {
+        if (!obj.hasOwnProperty(key)) {
+          obj[key] = objArg[key];
+        }
+      }
+    });
+    return obj;
+  };
 
   /**
    * FUNCTIONS
