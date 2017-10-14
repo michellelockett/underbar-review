@@ -39,11 +39,15 @@
   // last element.
   _.last = function(array, n) {
     //if n is undefined, return the last element
-    if (n === undefined) {return array[array.length - 1];}
-    //elseif n > array length, return the array
-    else if (n > array.length) {return array;}
+    if (n === undefined) {
+      return array[array.length - 1];
+    } else if (n > array.length) {
+      return array;
+    } else {
+      return array.slice(array.length - n);
+    }
     //if n is defined, return the last n elements in the array
-    else {return array.slice(array.length - n);}
+
   };
 
   // Call iterator(value, key, collection) for each element of collection.
