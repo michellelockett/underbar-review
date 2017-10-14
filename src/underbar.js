@@ -109,11 +109,27 @@
     return _.filter(collection, function(element) {
       return !test(element);
     });
-
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    iterator = iterator || _.identity;
+    console.log(iterator);
+
+    //isSorted is false //
+    var results = [];
+    var resultsObj = {};
+
+    _.each(array, function(value) {
+      var resultsOfIterator = iterator(value);
+      if (!resultsObj[resultsOfIterator]) {
+        resultsObj[resultsOfIterator] = value;
+      }
+    });
+
+    results = Object.values(resultsObj);
+    return results;
+
   };
 
 
