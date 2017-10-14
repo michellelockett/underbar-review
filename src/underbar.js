@@ -99,7 +99,7 @@
       if (test(element)) {
         results.push(element);
       }
-    })
+    });
     return results;
   };
 
