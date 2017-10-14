@@ -186,16 +186,20 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
-    var collectionCopy = [];
+    var collectionCopy = collection;
+
     // check to see if accumulator undefined
     // if it is, assign accumulator collection[0]
     // assign to collectionCopy a shallow copy of collection from index 2 on
     // otherwise, collectionCopy is copy of whole array
-    if (accumulator === undefined) {
-      accumulator = collection[0];
-      collectionCopy = collection.slice(1);
-    } else {
-      collectionCopy = collection.slice();
+
+    if (Array.isArray(collection)) {
+      if (accumulator === undefined) {
+        accumulator = collection[0];
+        collectionCopy = collection.slice(1);
+      } else {
+        collectionCopy = collection.slice();
+      }
     }
 
     // iterate over the collection
