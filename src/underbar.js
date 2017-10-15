@@ -356,6 +356,18 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var results = {};
+    return function() {
+      //check an object where we've stored our function calls
+      //if it doesn't, it will store the results of calling the function with these args
+      //return that value from the results obj
+      var args = Array.prototype.slice.call(arguments, 1);
+      var argString = JSON.stringify(args);
+      if (!results.hasOwnProperty(argString)) {
+        results[argString] = func.apply(this, arguments);
+      }
+      return results[argString];
+    };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
