@@ -357,6 +357,7 @@
   // instead if possible.
   _.memoize = function(func) {
     var results = {};
+
     return function() {
       //check an object where we've stored our function calls
       //if it doesn't, it will store the results of calling the function with these args
@@ -377,6 +378,14 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    //return settimeout
+    //setTimeout(function(){ alert("Hello"); }, 3000);
+    var delayTime = arguments[1];
+    var args = Array.prototype.slice.call(arguments, 2);
+
+    return setTimeout(function(){
+      func.apply(this, args);
+    }, delayTime);
   };
 
 
