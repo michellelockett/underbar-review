@@ -454,6 +454,42 @@
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
     //if iterator is a string
+    var results = [];
+    var resultsObj = {};
+    var iterated = [];
+    var sorted = [];
+    var toPass = iterator;
+    var uniq = [];
+    
+    //convert a string to a method or object lookup if needed
+
+    if (typeof iterator === 'string') {
+      toPass = function(element) {
+        return element[iterator];
+      };
+    }
+
+    //a new collection of the original values with iterator function and/or lookup
+    iterated = _.map(collection, toPass);
+    //a copy of the iterated array that is now sorted
+    sorted = iterated.slice().sort();
+    //store all the iterated values in an object
+    for (var i = 0; i < collection.length; i++) {
+      if (!resultsObj[iterated[i]]) {
+        resultsObj[iterated[i]] = [collection[i]];
+      } else {
+        resultsObj[iterated[i]].push(collection[i]);
+      }
+    }
+    //remove repeats for the resultsObj lookup
+    uniq = _.uniq(sorted);
+    //retrieve the iterated values in sorted order
+    _.each(uniq, function(element) {
+      _.each(resultsObj[element], function(el) {
+        results.push(el);
+      });
+    });   
+    return results;
   };
 
   // Zip together two or more arrays with elements of the same index
@@ -549,11 +585,9 @@
         intersections.push(element);
       });
     });
-    console.log(intersections);
     
     for (var i = 0; i < array.length; i++) {
       if (!intersections.includes(array[i])) {
-        console.log("this element is not an intersection: " , array[i]);
         results.push(array[i]);
       }
     }
@@ -566,5 +600,10 @@
   //
   // Note: This is difficult! It may take a while to implement.
   _.throttle = function(func, wait) {
+
+
+    return function() {
+
+    };
   };
 }());
