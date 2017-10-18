@@ -511,7 +511,7 @@
         //if that element is in all the other arrays, save it to alreadyVisited as true
         //otherwise save it to alreadyVisited as false
         if (!alreadyVisited[element]) {
-          var result = true;
+          var result = element;
           //if we've gotten to the very last arguments array, any element not already in the object
           //is not in all of them
           if (i === args.length - 1) {
@@ -529,8 +529,8 @@
     }
 
     for (var key in alreadyVisited) {
-      if (alreadyVisited[key] === true) {
-        results.push(key);
+      if (alreadyVisited[key] !== false) {
+        results.push(alreadyVisited[key]);
       }
     }
     return results;
@@ -539,6 +539,25 @@
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
+    var results = [];
+    var intersections = [];
+    var argsArrays = Array.prototype.slice.call(arguments, 1);
+    
+    _.each(argsArrays, function(argArray) {
+      var intersection = _.intersection(argArray, array);
+      _.each(intersection, function(element) {
+        intersections.push(element);
+      });
+    });
+    console.log(intersections);
+    
+    for (var i = 0; i < array.length; i++) {
+      if (!intersections.includes(array[i])) {
+        console.log("this element is not an intersection: " , array[i]);
+        results.push(array[i]);
+      }
+    }
+    return results;
   };
 
   // Returns a function, that, when invoked, will only be triggered at most once
