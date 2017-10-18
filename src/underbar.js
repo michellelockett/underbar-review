@@ -383,7 +383,7 @@
     var delayTime = arguments[1];
     var args = Array.prototype.slice.call(arguments, 2);
 
-    return setTimeout(function(){
+    return setTimeout(function() {
       func.apply(this, args);
     }, delayTime);
   };
@@ -478,7 +478,7 @@
         if (arg[i]) {
           zip.push(arg[i]);
         } else {
-          zip.push(undefined)
+          zip.push(undefined);
         }
       });
       zipped.push(zip);
@@ -491,11 +491,49 @@
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
+    //if the element is an array, it recursively calls flatten. 
+    return nestedArray.reduce(function(a, b) {
+      return a.concat(Array.isArray(b) ? _.flatten(b) : b);      
+    }, []);
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function() {
+    var results = [];
+    var alreadyVisited = {};
+    var args = Array.prototype.slice.call(arguments);
+    
+    for (var i = 0; i < args.length; i++) {
+      _.each(args[i], function(element) {
+        //if that element is already in alreadyVisited, skip it.
+        //otherwise:
+        //if that element is in all the other arrays, save it to alreadyVisited as true
+        //otherwise save it to alreadyVisited as false
+        if (!alreadyVisited[element]) {
+          var result = true;
+          //if we've gotten to the very last arguments array, any element not already in the object
+          //is not in all of them
+          if (i === args.length - 1) {
+            result = false;
+          } else {
+            for (var j = i; j < args.length; j++) {
+              if (args[j].indexOf(element) < 0) {
+                result = false;
+              }
+            }
+          }
+          alreadyVisited[element] = result;
+        }    
+      });
+    }
+
+    for (var key in alreadyVisited) {
+      if (alreadyVisited[key] === true) {
+        results.push(key);
+      }
+    }
+    return results;
   };
 
   // Take the difference between one array and a number of other arrays.
